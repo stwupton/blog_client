@@ -1,5 +1,6 @@
+<p (click)="navigateBackward()"><</p>
 <ul>
-  <li *ngFor="let year of postIndex.years">
-    {{year}}
+  <li *ngFor="let value of listView" (click)="navigateForward(value)">
+    {{value}}
   </li>
 </ul>
