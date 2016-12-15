@@ -2,9 +2,10 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/platform/browser.dart';
+import 'package:angular2/router.dart';
 
 import 'components/app_component.dart';
 
 main() {
-  bootstrap(App);
+  bootstrap(AppComponent, [ROUTER_PROVIDERS]);
 }

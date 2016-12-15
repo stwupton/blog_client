@@ -9,4 +9,4 @@ import 'menu_component.dart';
     selector: 'app',
     directives: const [Menu],
     templateUrl: '../html/app_component.html')
-class App {}
+class AppComponent {}
