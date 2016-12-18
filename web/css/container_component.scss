@@ -1,0 +1,16 @@
+menu {
+  position: fixed;
+  width: 200px;
+  background-color: #797979;
+  height:  100%;
+  margin: 0;
+  padding: 0;
+  word-break: break-word;
+  overflow-y: auto;
+}
+
+content {
+  display: block;
+  margin: 0 0 0 200px;
+  padding: 30px 20px 30px 40px;
+}

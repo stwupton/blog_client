@@ -1,2 +1,5 @@
-<i class="material-icons" id="navigate_back">&#xE5C4;</i>
-<router-outlet></router-outlet>
+<ul>
+  <li *ngFor="let value of listValues" (click)="navigate(value)">
+    {{value.runtimeType.toString() == 'Post' ? value.title : monthValue(value)}}
+  </li>
+</ul>

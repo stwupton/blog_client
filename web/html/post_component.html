@@ -1,0 +1,8 @@
+<h1>{{post.title}}</h1>
+<p class="date">
+  <i>Published:
+    {{post.published.day}}/{{post.published.month}}/{{post.published.year}}</i></p>
+<p class="date" *ngIf="post.updated != null">
+  <i>Updated:
+    {{post.updated.day}}/{{post.updated.month}}/{{post.updated.year}}</i></p>
+<div [innerHtml]="post.content"></div>

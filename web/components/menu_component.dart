@@ -3,14 +3,62 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
+// import 'package:angular2/platform/common.dart';
 
-import 'menu_list_component.dart';
+import 'package:blog_client/post_index.dart';
+import 'package:blog_client/post.dart';
 
 @Component(
     selector: 'menu',
     templateUrl: '../html/menu_component.html',
-    directives: const [MenuListComponent, ROUTER_DIRECTIVES])
-@RouteConfig(const [
-  const Route(path: '/', name: 'Home', component: MenuListComponent, useAsDefault: true)
-])
-class Menu {}
+    styleUrls: const ['../css/menu_component.css'],
+    directives: const [ROUTER_DIRECTIVES],
+    providers: const [PostIndex])
+class MenuComponent implements OnInit {
+
+  @Input() int year;
+  @Input() int month;
+  @Input() String postId;
+
+  Post post;
+
+  // Services
+  PostIndex postIndex;
+  Router router;
+
+  List get listValues => postIndex.getIndex(year: year, month: month);
+
+  MenuComponent(this.postIndex, this.router);
+
+  dynamic monthValue(int value) {
+
+    if (!(value >= 1 && value <= 12))
+      return value;
+
+    List<String> months =
+        ['', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    return months[value];
+
+  }
+
+  void navigate(var value) {
+
+    StringBuffer path = new StringBuffer();
+    if (value is Post) {
+      path.write('/$year/$month/${value.id}');
+    } else {
+      path
+        ..write(year == null ? '' : '/$year')
+        ..write('/$value');
+    }
+
+    router.navigateByUrl(path.toString());
+
+  }
+
+  void ngOnInit() {
+    if (postId != null)
+      post = postIndex.getPost(year, month, postId);
+  }
+
+}
