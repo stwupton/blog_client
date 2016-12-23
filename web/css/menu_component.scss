@@ -2,6 +2,13 @@ ul {
   margin: 20px 0 0 0;
   padding: 0;
 
+  #home_button {
+    i {
+      font-size: 14px;
+      vertical-align: middle;
+    }
+  }
+
   li {
     list-style: none;
     padding: 10px 20px 10px 20px;
