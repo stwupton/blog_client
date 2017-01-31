@@ -1,6 +1,8 @@
 // Copyright (c) 2016, Steven Upton. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 // import 'package:angular2/platform/common.dart';
@@ -12,8 +14,7 @@ import 'package:blog_client/post.dart';
     selector: 'menu',
     templateUrl: '../html/menu_component.html',
     styleUrls: const ['../css/menu_component.css'],
-    directives: const [ROUTER_DIRECTIVES],
-    providers: const [PostIndex])
+    directives: const [ROUTER_DIRECTIVES])
 class MenuComponent implements OnInit {
 
   @Input() int year;
@@ -26,7 +27,7 @@ class MenuComponent implements OnInit {
   PostIndex postIndex;
   Router router;
 
-  List get listValues => postIndex.getIndex(year: year, month: month);
+  List listValues;
 
   MenuComponent(this.postIndex, this.router);
 
@@ -56,9 +57,12 @@ class MenuComponent implements OnInit {
 
   }
 
-  void ngOnInit() {
+  Future ngOnInit() async {
+    year = year == null ? null : int.parse('$year');
+    month = month == null ? null : int.parse('$month');
+    listValues = await postIndex.getIndex(year: year, month: month);
     if (postId != null)
-      post = postIndex.getPost(year, month, postId);
+      post = await postIndex.getPost(year, month, postId);
   }
 
 }

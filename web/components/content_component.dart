@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:angular2/core.dart';
+import 'package:angular2/security.dart';
 
 import 'package:blog_client/post_index.dart';
 import 'package:blog_client/post.dart';
@@ -11,47 +14,53 @@ import 'post_component.dart';
     templateUrl: '../html/content_component.html',
     styleUrls: const ['../css/content_component.css'],
     directives: const [PostSnippetComponent, PostComponent],
-    providers: const [PostIndex])
-class ContentComponent {
+    providers: const [DomSanitizationService])
+class ContentComponent implements OnInit {
 
   @Input() int year;
   @Input() int month;
   @Input() String postId;
 
+  List<Post> postList;
+  Post activePost;
+
   // Services
   PostIndex postIndex;
+  DomSanitizationService sanitizer;
 
-  ContentComponent(this.postIndex);
+  ContentComponent(this.postIndex, this.sanitizer);
 
-  Post get activePost => postIndex.getPost(year, month, postId);
-
-  List<Post> get postList {
+  Future<List<Post>> get _postList async {
 
     List<Post> _pl = [];
-    void fromMonths(year) {
-      for (int month in postIndex.months(year)) {
-        _pl.addAll(postIndex.getIndex(year: year, month: month));
-      }
+    Future fromMonths(int year) async {
+      for (int month in await postIndex.months(year))
+        _pl.addAll(await postIndex.getIndex(year: year, month: month));
     }
 
-    void fromYears() {
-      for (int year in postIndex.years) {
+    Future fromYears() async {
+      for (int year in await postIndex.years)
         fromMonths(year);
-      }
     }
 
     if (month == null) {
-      if (year == null) {
-        fromYears();
-      } else {
-        fromMonths(year);
-      }
+      if (year == null)
+        await fromYears();
+      else
+        await fromMonths(year);
     } else {
-      _pl.addAll(postIndex.getIndex(year: year, month: month));
+      _pl.addAll(await postIndex.getIndex(year: year, month: month));
     }
 
     return _pl;
 
+  }
+
+  Future ngOnInit() async {
+    year = year == null ? null : int.parse('$year');
+    month = month == null ? null : int.parse('$month');
+    activePost = await postIndex.getPost(year, month, postId);
+    postList = await _postList;
   }
 
 }
