@@ -1,3 +1,4 @@
+<p class="new_tag" *ngIf="isNew">NEW</p>
 <h2 (click)="showPost()">{{post.title}}</h2>
 <p class="date">
   <i>Published:
@@ -5,4 +6,4 @@
 <p class="date" *ngIf="post.updated != null">
   <i>Updated:
     {{post.updated.day}}/{{post.updated.month}}/{{post.updated.year}}</i></p>
-<div [safeInnerHtml]="sanitizer.bypassSecurityTrustHtml(post.content)"></div>
+<p class="snippet" [safeInnerHtml]="sanitizer.bypassSecurityTrustHtml(post.snippet)"></p>

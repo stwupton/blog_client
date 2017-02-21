@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:angular2/core.dart';
 import 'package:angular2/security.dart';
@@ -13,7 +14,7 @@ import 'post_component.dart';
     selector: 'content',
     templateUrl: '../html/content_component.html',
     styleUrls: const ['../css/content_component.css'],
-    directives: const [PostSnippetComponent, PostComponent],
+    directives: const [PostSnippetComponent, PostComponent, SafeInnerHtmlDirective],
     providers: const [DomSanitizationService])
 class ContentComponent implements OnInit {
 
@@ -27,6 +28,29 @@ class ContentComponent implements OnInit {
   // Services
   PostIndex postIndex;
   DomSanitizationService sanitizer;
+
+  DivElement get disqus => new DivElement()
+    ..setInnerHtml(_disqusHtml, treeSanitizer: NodeTreeSanitizer.trusted);
+
+  String get _disqusHtml => '''<div id="disqus_thread"></div>
+  <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+    var disqus_config = function() {
+      this.page.url = 'https://stwupton.github.io/$year/$month/$postId';  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = $postId; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = '//stwupton-github-io.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>''';
 
   ContentComponent(this.postIndex, this.sanitizer);
 

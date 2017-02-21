@@ -17,6 +17,9 @@ class PostSnippetComponent {
   Router router;
   DomSanitizationService sanitizer;
 
+  bool get isNew =>
+    new DateTime.now().difference(post.published) < new Duration(days: 5);
+
   PostSnippetComponent(this.router, this.sanitizer);
 
   void showPost() {

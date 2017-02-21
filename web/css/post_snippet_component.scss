@@ -1,14 +1,30 @@
+.new_tag {
+  float: right;
+  margin: 0;
+  background-color: red;
+  color: white;
+  font-size: .80em;
+  font-weight: 500;
+  padding: 3px;
+  border-radius: 3px;
+}
+
 h2 {
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 300;
   cursor: pointer;
-  margin: 30px 0 0 0;
+  margin: 10px 0 0 0;
   &:hover {
     text-decoration: underline;
   }
 }
 
 .date {
-  margin: 5px 0 0 0;
+  margin: 0;
   font-size: 14px;
+  color: #696969;
+}
+
+.snippet {
+  margin: 10px 0 0 0;
 }

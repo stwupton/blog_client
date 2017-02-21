@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:js';
 
 import 'package:angular2/core.dart';
 import 'package:angular2/security.dart';
@@ -51,19 +52,31 @@ class PostComponent implements OnInit {
       });
     }
 
-    for (ImageElement image in images) {
-      print(image.style.width);
+    void _setImageSize(ImageElement image) {
+      num width = image.naturalWidth > 500 ? 500 : image.naturalWidth;
       image.style
-        ..maxWidth = image.style.width
+        ..maxWidth = '${width}px'
         ..width = '100%';
+    }
+
+    for (ImageElement image in images) {
+      if (image.complete)
+        _setImageSize(image);
+      else
+        image.onLoad.first.then((_) => _setImageSize(image));
     }
 
   }
 
   void ngOnInit() {
+
     postBody = querySelector('post div#body');
     postBody.setInnerHtml(post.content, treeSanitizer: NodeTreeSanitizer.trusted);
     adaptElements();
+
+    context['hljs'].callMethod('initHighlighting');
+    context['hljs']['initHighlighting']['called'] = false;
+
   }
 
 }
