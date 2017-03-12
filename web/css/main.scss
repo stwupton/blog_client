@@ -1,10 +1,12 @@
 * {
-  font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
 
+$code_font: 'Inconsolata', consolas, monospace;
+
 // Style for dynamically loaded posts
 body {
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   background-color: #e0dfdf;
 
@@ -34,10 +36,10 @@ body {
 
       code {
         font-size: .85em;
-        font-family: consolas;
+        font-family: $code_font;
 
         * {
-          font-family: consolas;
+          font-family: $code_font;
         }
       }
 

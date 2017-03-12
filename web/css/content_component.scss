@@ -9,6 +9,6 @@ post-snippet {
   max-width: 800px;
 }
 
-post {
+post, disqus {
   @extend post-snippet;
 }

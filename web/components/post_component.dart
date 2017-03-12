@@ -2,7 +2,6 @@ import 'dart:html';
 import 'dart:js';
 
 import 'package:angular2/core.dart';
-import 'package:angular2/security.dart';
 
 // import 'package:blog_client/post_index.dart';
 import 'package:blog_client/post.dart';
@@ -10,18 +9,14 @@ import 'package:blog_client/post.dart';
 @Component(
     selector: 'post',
     templateUrl: '../html/post_component.html',
-    styleUrls: const ['../css/post_component.css'],
-    directives: const [SafeInnerHtmlDirective])
+    styleUrls: const ['../css/post_component.css'])
 class PostComponent implements OnInit {
 
   @Input() Post post;
 
   DivElement postBody;
 
-  // Services
-  DomSanitizationService sanitizer;
-
-  PostComponent(this.sanitizer);
+  PostComponent();
 
   void adaptElements() {
 

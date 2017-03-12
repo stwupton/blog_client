@@ -1,6 +1,6 @@
 <div *ngIf="activePost != null">
   <post [post]="activePost"></post>
-  <div id="disqus_chat">{{disqus}}</div>
+  <disqus [post]="activePost"></disqus>
 </div>
 <div *ngIf="postId == null">
   <post-snippet *ngFor="let post of postList" [post]="post"></post-snippet>
