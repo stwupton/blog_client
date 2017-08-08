@@ -8,10 +8,10 @@ dependencies:
 dev_dependencies:
   browser: ^0.10.0
   dart_to_js_script_rewriter: ^1.0.1
-  dart_sass_transformer: 0.5.0+1
+  simple_sass_transformer: ^0.0.2
   markdown: any
 transformers:
-- dart_sass_transformer
+- simple_sass_transformer
 - angular2:
     platform_directives:
     - 'package:angular2/common.dart#COMMON_DIRECTIVES'
