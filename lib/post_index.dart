@@ -24,7 +24,7 @@ class PostIndex {
       if (index == null)
         continue;
 
-      // Transform all keys in index to integers;
+      // Transform all keys in index to integers.
       List<String> keys = index.keys.toList();
       for (String key in keys) {
         index[int.parse(key)] = index[key];
@@ -41,7 +41,7 @@ class PostIndex {
     (await index).keys.toList();
 
   Future<List<int>> months(int year) async =>
-    (await index)[year]?.keys?.toList() ?? [];
+    ((await index)[year]?.keys?.toList() ?? []).reversed;
 
   Future<List<Post>> posts(int year, int month) async {
     Map index = await this.index;
@@ -66,6 +66,7 @@ class PostIndex {
       _postCache[year][month].add(new Post.fromMap(postData));
     }
 
+    _postCache[year][month] = _postCache[year][month].reversed;
     return _postCache[year][month];
   }
 

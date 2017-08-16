@@ -22,6 +22,34 @@ class PostSnippetComponent {
 
   PostSnippetComponent(this.router, this.sanitizer);
 
+  String formatDate(DateTime date) {
+    String daySuffix;
+    if (date.day > 10 && date.day < 20) {
+      daySuffix = 'th';
+    } else {
+      switch (date.day % 10) {
+        case 1:
+          daySuffix = 'st';
+          break;
+        case 2:
+          daySuffix = 'nd';
+          break;
+        case 3:
+          daySuffix = 'rd';
+          break;
+        default:
+          daySuffix = 'th';
+      }
+    }
+
+    List<String> months = [
+      '', 'January', 'Febuary', 'March', 'April', 'May', 'June', 'July',
+      'August', 'September', 'October', 'November', 'December'
+    ];
+
+    return '${date.day}$daySuffix ${months[date.month]} ${date.year}';
+  }
+
   void showPost() {
     int year  = post.published.year,
         month = post.published.month;

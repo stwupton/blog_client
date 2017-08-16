@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:html';
 
 import 'package:angular2/core.dart';
-import 'package:angular2/security.dart';
+import 'package:angular2/router.dart';
 
 import 'package:blog_client/post_index.dart';
 import 'package:blog_client/post.dart';
 
+import 'about_me_component.dart';
 import 'disqus_component.dart';
 import 'post_snippet_component.dart';
 import 'post_component.dart';
@@ -15,7 +16,7 @@ import 'post_component.dart';
     selector: 'content',
     templateUrl: '../html/content_component.html',
     styleUrls: const ['../css/content_component.css'],
-    directives: const [DisqusComponent, PostSnippetComponent, PostComponent])
+    directives: const [ROUTER_DIRECTIVES, AboutMeComponent, DisqusComponent, PostSnippetComponent, PostComponent])
 class ContentComponent implements OnInit {
 
   @Input() int year;
@@ -23,12 +24,13 @@ class ContentComponent implements OnInit {
   @Input() String postId;
 
   List<Post> postList;
-  Post activePost;
+  List<Post> recentPostList;
 
   // Services
   PostIndex postIndex;
+  Router router;
 
-  ContentComponent(this.postIndex);
+  ContentComponent(this.postIndex, this.router);
 
   Future<List<Post>> get _postList async {
 
@@ -40,7 +42,7 @@ class ContentComponent implements OnInit {
 
     Future fromYears() async {
       for (int year in await postIndex.years)
-        fromMonths(year);
+        await fromMonths(year);
     }
 
     if (month == null) {
@@ -57,10 +59,11 @@ class ContentComponent implements OnInit {
   }
 
   Future ngOnInit() async {
+    window.scrollTo(0, 0);
     year = year == null ? null : int.parse('$year');
     month = month == null ? null : int.parse('$month');
-    activePost = await postIndex.getPost(year, month, postId);
     postList = await _postList;
+    recentPostList = postList.length > 2 ? postList.sublist(0, 3) : postList;
   }
 
 }

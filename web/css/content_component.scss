@@ -1,5 +1,38 @@
 @import 'partials/mixins';
 
+#header {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 10px 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
+    display: inline-block;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  #rss_button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 0;
+    padding: 10px;
+    margin: 0;
+  }
+}
+
 post-snippet {
   @include box_shadow(1);
   display: block;
@@ -9,6 +42,18 @@ post-snippet {
   max-width: 800px;
 }
 
-post, disqus {
+post, disqus, about-me {
   @extend post-snippet;
+}
+
+#recent_posts_header {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 10px;
+
+  h2 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
+    margin-bottom: 10px;
+  }
 }

@@ -1,8 +1,9 @@
+<button id="menu_button" (click)="isOpen ? close() : open()"><i class="material-icons">menu</i></button>
 <ul>
-  <li id="home_button" (click)="router.navigateByUrl('/')">
+  <li id="home_button" (click)="navigate('/')">
     <i class="material-icons">&#xE88A;</i>
   </li>
   <li *ngFor="let value of listValues" (click)="navigate(value)">
-    {{value.runtimeType.toString() == 'Post' ? value.title : monthValue(value)}}
+    {{menuItem(value)}}
   </li>
 </ul>

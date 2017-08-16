@@ -2,6 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:html';
 
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
@@ -27,26 +28,42 @@ class MenuComponent implements OnInit {
   PostIndex postIndex;
   Router router;
 
+  bool get isOpen => querySelector('menu').classes.contains('open');
   List listValues;
 
   MenuComponent(this.postIndex, this.router);
 
-  dynamic monthValue(int value) {
+  void close() {
+    querySelector('menu').classes.remove('open');
+  }
 
-    if (!(value >= 1 && value <= 12))
+  dynamic menuItem(dynamic value) {
+    if (value is Post) {
+      return (value as Post).title;
+    }
+
+    if (value is! int) {
+      throw 'Unknown type used for menu item.';
+    }
+
+    if (!(value >= 1 && value <= 12)) {
       return value;
+    }
 
-    List<String> months =
-        ['', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-    return months[value];
-
+    List<String> months = [
+      '', 'January', 'Febuary', 'March', 'April', 'May', 'June', 'July',
+      'August', 'September', 'October', 'November', 'December'
+    ];
+    
+    return months[value].substring(0, 3).toUpperCase();
   }
 
   void navigate(var value) {
-
     StringBuffer path = new StringBuffer();
     if (value is Post) {
       path.write('/$year/$month/${value.id}');
+    } else if (value is String) {
+      path.write(value);
     } else {
       path
         ..write(year == null ? '' : '/$year')
@@ -54,15 +71,21 @@ class MenuComponent implements OnInit {
     }
 
     router.navigateByUrl(path.toString());
-
+    close();
   }
 
   Future ngOnInit() async {
+    close();
+
     year = year == null ? null : int.parse('$year');
     month = month == null ? null : int.parse('$month');
     listValues = await postIndex.getIndex(year: year, month: month);
     if (postId != null)
       post = await postIndex.getPost(year, month, postId);
+  }
+
+  void open() {
+    querySelector('menu').classes.add('open');
   }
 
 }

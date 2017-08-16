@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html';
 import 'dart:js';
 
@@ -5,6 +6,7 @@ import 'package:angular2/core.dart';
 
 // import 'package:blog_client/post_index.dart';
 import 'package:blog_client/post.dart';
+import 'package:blog_client/post_index.dart';
 
 @Component(
     selector: 'post',
@@ -12,11 +14,15 @@ import 'package:blog_client/post.dart';
     styleUrls: const ['../css/post_component.css'])
 class PostComponent implements OnInit {
 
-  @Input() Post post;
+  @Input() String postId;
+  @Input() int year;
+  @Input() int month;
 
+  Post post;
   DivElement postBody;
+  PostIndex postIndex;
 
-  PostComponent();
+  PostComponent(this.postIndex);
 
   void adaptElements() {
 
@@ -63,7 +69,41 @@ class PostComponent implements OnInit {
 
   }
 
-  void ngOnInit() {
+  String formatDate(DateTime date) {
+    if (date == null) {
+      return '';
+    }
+
+    String daySuffix;
+    if (date.day > 10 && date.day < 20) {
+      daySuffix = 'th';
+    } else {
+      switch (date.day % 10) {
+        case 1:
+          daySuffix = 'st';
+          break;
+        case 2:
+          daySuffix = 'nd';
+          break;
+        case 3:
+          daySuffix = 'rd';
+          break;
+        default:
+          daySuffix = 'th';
+      }
+    }
+
+    List<String> months = [
+      '', 'January', 'Febuary', 'March', 'April', 'May', 'June', 'July',
+      'August', 'September', 'October', 'November', 'December'
+    ];
+
+    return '${date.day}$daySuffix ${months[date.month]} ${date.year}';
+  }
+
+  Future ngOnInit() async {
+
+    post = await postIndex.getPost(year, month, postId);
 
     postBody = querySelector('post div#body');
     postBody.setInnerHtml(post.content, treeSanitizer: NodeTreeSanitizer.trusted);

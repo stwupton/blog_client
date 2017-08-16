@@ -1,7 +1,21 @@
-<div *ngIf="activePost != null">
-  <post [post]="activePost"></post>
-  <disqus [post]="activePost"></disqus>
+<div id="header">
+  <h1 (click)="router.navigateByUrl('/')">Steven Upton's Blog</h1>
+  <a href="https://raw.githubusercontent.com/stwupton/blog_posts/dev/feed.xml"
+      title="Atom Feed"
+      target="_blank"
+      id="rss_button">
+    <i class="material-icons">rss_feed</i>
+  </a>
 </div>
-<div *ngIf="postId == null">
+<div *ngIf="postId != null">
+  <post [postId]="postId" [year]="year" [month]="month"></post>
+  <disqus [postId]="postId" [year]="year" [month]="month"></disqus>
+</div>
+<div *ngIf="year != null && postId == null">
   <post-snippet *ngFor="let post of postList" [post]="post"></post-snippet>
+</div>
+<div *ngIf="year == null">
+  <about-me></about-me>
+  <div id="recent_posts_header"><h2>Recent Posts</h2></div>
+  <post-snippet *ngFor="let post of recentPostList" [post]="post"></post-snippet>
 </div>

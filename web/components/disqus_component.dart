@@ -26,14 +26,16 @@ class DisqusComponent implements AfterViewInit {
       (d.head || d.body).appendChild(s);
     })();''';
 
-  @Input() Post post;
+  @Input() String postId;
+  @Input() int year;
+  @Input() int month;
 
   String get _disqusScript {
 
     Map <String, dynamic> toReplace = {
-      'year': post.published.year,
-      'month': post.published.month,
-      'postId': post.id
+      'year': year,
+      'month': month,
+      'postId': postId
     };
 
     String scriptText = _JS_SCRIPT;
