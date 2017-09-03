@@ -1,0 +1,13 @@
+#not_found {
+  @include card();
+
+  h2 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 300;
+    margin: 10px 0 0 0;
+  }
+
+  p {
+    margin: 10px 0 0 0;
+  }
+}

@@ -1,9 +1,0 @@
-<i class="material-icons new_tag" *ngIf="isNew">fiber_new</i>
-<h2 (click)="showPost()">{{post.title}}</h2>
-<p class="date">
-  Published: {{formatDate(post.published)}}
-</p>
-<p class="date" *ngIf="post.updated != null">
-  Updated: {{formatDate(post.updated)}}
-</p>
-<p class="snippet" [safeInnerHtml]="sanitizer.bypassSecurityTrustHtml(post.snippet)"></p>

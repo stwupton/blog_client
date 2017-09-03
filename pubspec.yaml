@@ -4,21 +4,14 @@ version: 0.0.1
 environment:
   sdk: '>=1.19.0 <2.0.0'
 dependencies:
-  angular2: ^2.0.0
   bliss: ^0.3.0
 dev_dependencies:
   browser: ^0.10.0
   dart_to_js_script_rewriter: ^1.0.1
-  simple_sass_transformer: ^0.0.2
+  transform_sass: ^0.3.0
   markdown: any
 transformers:
-- simple_sass_transformer
-- angular2:
-    platform_directives:
-    - 'package:angular2/common.dart#COMMON_DIRECTIVES'
-    platform_pipes:
-    - 'package:angular2/common.dart#COMMON_PIPES'
-    entry_points: web/main.dart
+- transform_sass
 - dart_to_js_script_rewriter
 - $dart2js:
-    sourceMaps: true
+    minify: true

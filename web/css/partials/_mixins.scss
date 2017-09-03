@@ -11,3 +11,19 @@
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
   }
 }
+
+@mixin card() {
+  @include box_shadow(1);
+  display: block;
+  padding: 10px 15px 20px 20px;
+  margin: 0 auto 15px auto;
+  background-color: white;
+  max-width: 800px;
+}
+
+@mixin transition($values...) {
+  -webkit-transition: $values;
+  -moz-transition: $values;
+  -o-transition: $values;
+  transition: $values;
+}

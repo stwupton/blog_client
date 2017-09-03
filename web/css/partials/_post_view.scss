@@ -1,0 +1,57 @@
+$code_font: 'Roboto Mono', consolas, monospace;
+
+#post {
+  @include card();
+
+  #title {
+    font-size: 54px;
+    font-weight: 300;
+    font-family: 'Roboto Condensed', sans-serif;
+    margin: 30px 0 0 0;
+  }
+
+  .date {
+    margin: 5px 0 0 0;
+    font-size: 12px;
+    color: #696969;
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+
+  #body {
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Roboto Condensed', sans-serif;
+    }
+
+    h1 {
+      font-weight: 300;
+    }
+
+    p {
+      code {
+        color: #c25;
+        background-color: #f7f7f9;
+        border: 1px solid #e1e1e8;
+        border-radius: 3px;
+      }
+    }
+
+    img {
+      margin: 0 auto;
+      display: block;
+    }
+
+    code {
+      font-size: .85em;
+      font-family: $code_font;
+
+      * {
+        font-family: $code_font;
+      }
+    }
+
+    iframe {
+      display: block;
+      margin: 10px auto;
+    }
+  }
+}

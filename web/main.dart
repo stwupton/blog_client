@@ -1,13 +1,29 @@
 // Copyright (c) 2016, Steven Upton. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
+import 'dart:html';
 
-import 'package:angular2/platform/browser.dart';
-import 'package:angular2/router.dart';
+import 'actions/actions.dart';
+import 'dispatch_manager.dart';
+import 'services/services.dart' as services;
+import 'stores/stores.dart';
+import 'views/views.dart';
 
-import 'package:blog_client/post_index.dart';
+void main() {
+  dispatchManager.registerAllDispatchers([
+    routerActions,
+    indexActions
+  ]);
 
-import 'components/app_component.dart';
+  dispatchManager.registerAllReceivers([
+    postIndex,
+    router
+  ]);
 
-main() {
-  bootstrap(AppComponent, [ROUTER_PROVIDERS, PostIndex]);
+  services.run();
+  indexActions.fetchIndexes();
+
+  document.body.nodes.add(new App().html);
+
+  // Handle window location aftr initial render.
+  routerActions.handle();
 }
