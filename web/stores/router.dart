@@ -20,8 +20,7 @@ class Router extends Store {
 
   Router() : super() {
     handlers.addAll([
-      new Handler<RouterNavigateEvent>(_evaluatePath),
-      new Handler<UnknownPathEvent>(_handleUnknown)
+      new Handler<RouterNavigateEvent>(_evaluatePath)
     ]);
   }
 
@@ -59,12 +58,6 @@ class Router extends Store {
       _location = RouterLocation.post;
     }
 
-    update();
-  }
-
-  void _handleUnknown(_) {
-    _year = null; _month = null; _postId = null;
-    _location = RouterLocation.notFound;
     update();
   }
 }

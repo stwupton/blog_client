@@ -6,9 +6,20 @@ import 'store.dart';
 export 'dart:html';
 
 class _ElementSubscription {
-  Element element;
-  StreamSubscription subscription;
-  _ElementSubscription(this.element, this.subscription);
+  final Element element;
+  final String event;
+  final Function callback;
+  StreamSubscription _subscription;
+
+  StreamSubscription get subscription => _subscription;
+
+  _ElementSubscription(this.element, this.event, this.callback) {
+    _subscription = element.on[event].listen(callback);
+  }
+
+  bool operator ==(_ElementSubscription other) {
+    return other.element == element && other.event == event;
+  }
 }
 
 abstract class ViewComponent {
@@ -24,7 +35,7 @@ abstract class ViewComponent {
   Element get html {
     if (_html == null) {
       ViewComponent._components.add(this);
-      return _html = _ensureElement(render());
+      _html = _ensureElement(render());
     }
     return _html;
   }
@@ -95,17 +106,19 @@ abstract class ViewComponent {
 
   void reRender() {
     if (_html == null) {
-      throw 'Cannot re-render an non-rendered component.';
+      throw 'Cannot re-render a non-rendered component.';
     }
     Element result = _ensureElement(render());
     _refreshAttributes(_html, result);
     _html.nodes = result.nodes;
-    onReRender();
+
+    // Only execute `onReRender()` when the browser has painted the next frame.
+    window.requestAnimationFrame((_) => onReRender());
 
     // Remove all element subscriptions which does not have a mounted element.
     _elementSubscriptions
         .where((_ElementSubscription elementSub) =>
-            _html != elementSub.element && !_html.contains(elementSub.element))
+            !document.contains(elementSub.element))
         .toList().forEach((_ElementSubscription unusedSub) {
           unusedSub.subscription.cancel();
           _elementSubscriptions.remove(unusedSub);
@@ -130,16 +143,12 @@ abstract class ViewComponent {
   // Utility function for adding all stream subscriptions to a queue that will
   // be destroyed when the component unmounts the DOM.
   void subscribe(Element element, String event, dynamic callback(dynamic)) {
-    _elementSubscriptions.add(
-        new _ElementSubscription(element, element.on[event].listen(callback)));
-  }
-
-  void subscribeOnce(Element element, String event, dynamic callback(dynamic)) {
-    StreamSubscription subscription;
-    subscription = element.on[event].listen((Event e) {
-      subscription.cancel();
-      callback(e);
-    });
-    _elementSubscriptions.add(new _ElementSubscription(element, subscription));
+    _ElementSubscription sub =
+        new _ElementSubscription(element, event, callback);
+    if (_elementSubscriptions.where((other) => other == sub).length > 0) {
+      sub.subscription.cancel();
+    } else {
+      _elementSubscriptions.add(sub);
+    }
   }
 }

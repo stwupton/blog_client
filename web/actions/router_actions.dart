@@ -7,10 +7,6 @@ class RouterActions extends Actions {
     dispatch(new RouterNavigateEvent(path ?? currentPath));
   }
 
-  void handleUnknown() {
-    dispatch(new UnknownPathEvent());
-  }
-
   void navigate(String path, {String title}) {
     if (currentPath == path) {
       return replace(path, title: title);

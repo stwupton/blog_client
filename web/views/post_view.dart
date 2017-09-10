@@ -95,13 +95,13 @@ class PostView extends ViewComponent {
           ..text = post.title,
         new ParagraphElement()
           ..classes.add('date')
-          ..text = _formatDate(post.published)
+          ..text = 'Published: ${_formatDate(post.published)}'
       ]);
 
     if (post.updated != null) {
       container.nodes.add(new ParagraphElement()
         ..classes.add('date')
-        ..text = _formatDate(post.updated));
+        ..text = 'Updated: ${_formatDate(post.updated)}');
     }
 
     _postBody = new DivElement()

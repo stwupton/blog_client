@@ -66,7 +66,8 @@ class Menu extends ViewComponent {
       ..nodes.add(new Element.tag('i')
         ..classes.add('material-icons')
         ..text = 'menu');
-    subscribe(menuButton, 'click', (_) {
+    subscribe(menuButton, 'click', (MouseEvent e) {
+      e.stopPropagation();
       _state.isOpen ? _actions.close() : _actions.open();
     });
 
@@ -92,11 +93,27 @@ class Menu extends ViewComponent {
       listItems = _getPostListItems(router.year, router.month);
     }
 
+    // If there are no menu items then add years instead.
+    if (listItems.isEmpty) {
+      listItems = _getYearListItems();
+    }
+
     list.nodes.addAll(listItems);
 
-    return new DivElement()
+    DivElement menu = new DivElement()
       ..id = 'menu'
       ..classes.add(_state.isOpen ? 'open' : 'closed')
       ..nodes.addAll([menuButton, list]);
+
+    // Close menu when a click occurs anywhere else on the page.
+    if (_state.isOpen) {
+      subscribe(document.body, 'click', (MouseEvent e) {
+        if (html != e.target && !html.contains(e.target)) {
+          _actions.close();
+        }
+      });
+    }
+
+    return menu;
   }
 }

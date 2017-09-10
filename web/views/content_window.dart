@@ -13,6 +13,10 @@ class ContentWindow extends ViewComponent {
     reRenderOnStoreUpdates([router, postIndex]);
   }
 
+  void onReRender() {
+    window.scrollTo(0, 0);
+  }
+
   Node render() {
     final String rssLocation = 'https://raw.githubusercontent.com/stwupton/blog_posts/dev/feed.xml';
 
@@ -21,6 +25,25 @@ class ContentWindow extends ViewComponent {
     subscribe(titleHeading, 'click', (_) => routerActions.navigate('/'));
 
     DivElement content = new DivElement();
+
+    // Re-usable function for adding a "Page not fount" notice to the content.
+    void _pageNotFound() {
+      content.nodes.addAll([
+        new NotFound().html,
+        new DivElement()
+          ..id = 'recent_posts_header'
+          ..nodes.add(new HeadingElement.h2()..text = 'Recent Posts')
+      ]);
+
+      List<Post> recentPosts = postIndex.posts()
+        ..sort((Post a, Post b) => a.published.isAfter(b.published) ? -1 : 1);
+      if (recentPosts.length > 3) {
+        recentPosts = recentPosts.sublist(0, 3);
+      }
+
+      content.nodes.addAll(_generatePostSnippets(recentPosts));
+    }
+
     if (router.location == RouterLocation.home) {
       content.nodes.addAll([
         new AboutMe().html,
@@ -39,11 +62,19 @@ class ContentWindow extends ViewComponent {
     } else if (router.location == RouterLocation.year) {
       List<Post> posts = postIndex.posts(router.year)
         ..sort((Post a, Post b) => a.published.isAfter(b.published) ? -1 : 1);
-      content.nodes.addAll(_generatePostSnippets(posts));
+      if (posts.isEmpty) {
+        _pageNotFound();
+      } else {
+        content.nodes.addAll(_generatePostSnippets(posts));
+      }
     } else if (router.location == RouterLocation.month) {
       List<Post> posts = postIndex.posts(router.year, router.month)
         ..sort((Post a, Post b) => a.published.isAfter(b.published) ? -1 : 1);
-      content.nodes.addAll(_generatePostSnippets(posts));
+      if (posts.isEmpty) {
+        _pageNotFound();
+      } else {
+        content.nodes.addAll(_generatePostSnippets(posts));
+      }
     } else if (router.location == RouterLocation.post) {
       Post post = postIndex.post(router.year, router.month, router.postId);
       if (post?.content == null && (post?.exists ?? true)) {
@@ -52,7 +83,7 @@ class ContentWindow extends ViewComponent {
           ..id = 'loading_header'
           ..nodes.add(new HeadingElement.h2()..text = 'Loading...'));
       } else if (!post.exists) {
-        routerActions.handleUnknown();
+        _pageNotFound();
       } else {
         content.nodes.addAll([
           new PostView(post).html,
@@ -60,20 +91,7 @@ class ContentWindow extends ViewComponent {
         ]);
       }
     } else if (router.location == RouterLocation.notFound) {
-      content.nodes.addAll([
-        new NotFound().html,
-        new DivElement()
-          ..id = 'recent_posts_header'
-          ..nodes.add(new HeadingElement.h2()..text = 'Recent Posts')
-      ]);
-
-      List<Post> recentPosts = postIndex.posts()
-        ..sort((Post a, Post b) => a.published.isAfter(b.published) ? -1 : 1);
-      if (recentPosts.length > 3) {
-        recentPosts = recentPosts.sublist(0, 3);
-      }
-
-      content.nodes.addAll(_generatePostSnippets(recentPosts));
+      _pageNotFound();
     }
 
     return new DivElement()

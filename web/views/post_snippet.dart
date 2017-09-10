@@ -56,9 +56,19 @@ class PostSnippet extends ViewComponent {
       ..text = 'Updated: ${_formatDate(post.updated ?? new DateTime.now())}'
       ..style.display = post.updated == null ? 'none' : 'block';
 
+    AnchorElement readMoreLink = new AnchorElement()
+      ..innerHtml = 'Read more >'
+      ..classes.add('read_more');
+    subscribe(readMoreLink, 'click', (MouseEvent e) {
+      e.preventDefault();
+      routerActions.navigate(
+          '/${post.published.year}/${post.published.month}/${post.id}');
+    });
+
     ParagraphElement snippet = new ParagraphElement()
       ..classes.add('snippet')
-      ..setInnerHtml(post.snippet, treeSanitizer: NodeTreeSanitizer.trusted);
+      ..setInnerHtml('${post.snippet} ', treeSanitizer: NodeTreeSanitizer.trusted)
+      ..nodes.add(readMoreLink);
 
     DivElement container = new DivElement()
       ..classes.add('post_snippet')
