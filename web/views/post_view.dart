@@ -87,6 +87,9 @@ class PostView extends ViewComponent {
   }
 
   Node render() {
+    String publishDate = _formatDate(post.published);
+    String updatedDate = post.updated != null ? _formatDate(post.updated) : null;
+
     DivElement container = new DivElement()
       ..id = 'post'
       ..nodes.addAll([
@@ -95,13 +98,13 @@ class PostView extends ViewComponent {
           ..text = post.title,
         new ParagraphElement()
           ..classes.add('date')
-          ..text = 'Published: ${_formatDate(post.published)}'
+          ..text = 'Published: ${publishDate}'
       ]);
 
-    if (post.updated != null) {
+    if (updatedDate != null && updatedDate != publishDate) {
       container.nodes.add(new ParagraphElement()
         ..classes.add('date')
-        ..text = 'Updated: ${_formatDate(post.updated)}');
+        ..text = 'Updated: ${updatedDate}');
     }
 
     _postBody = new DivElement()

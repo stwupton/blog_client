@@ -47,14 +47,18 @@ class PostSnippet extends ViewComponent {
         (_) => routerActions.navigate(
             '/${post.published.year}/${post.published.month}/${post.id}'));
 
+    String publishDate = _formatDate(post.published);
+    String updatedDate = post.updated != null ? _formatDate(post.updated) : null;
+
     ParagraphElement published = new ParagraphElement()
       ..classes.add('date')
-      ..text = 'Published: ${_formatDate(post.published)}';
+      ..text = 'Published: ${publishDate}';
 
     ParagraphElement updated = new ParagraphElement()
       ..classes.add('date')
-      ..text = 'Updated: ${_formatDate(post.updated ?? new DateTime.now())}'
-      ..style.display = post.updated == null ? 'none' : 'block';
+      ..text = 'Updated: ${updatedDate ?? ''}'
+      ..style.display =
+          updatedDate == null || updatedDate == publishDate ? 'none' : 'block';
 
     AnchorElement readMoreLink = new AnchorElement()
       ..innerHtml = 'Read more >'
