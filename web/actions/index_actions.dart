@@ -1,10 +1,10 @@
 part of actions;
 
 class IndexActions extends Actions {
-  static const RESOURCE_URL = 'https://raw.githubusercontent.com/stwupton/blog_posts/dev/';
+  static const RESOURCE_URL = 'https://raw.githubusercontent.com/stwupton/blog_posts/master/';
 
   void fetchIndexes() {
-    for (int year = new DateTime.now().year; year >= 2016; year--) {
+    for (int year = new DateTime.now().year; year >= 2018; year--) {
       HttpRequest.request('${RESOURCE_URL}index/$year.json')
           .then((HttpRequest response) {
             Map index = JSON.decode(response.responseText);

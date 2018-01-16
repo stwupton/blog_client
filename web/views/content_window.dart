@@ -18,7 +18,7 @@ class ContentWindow extends ViewComponent {
   }
 
   Node render() {
-    final String rssLocation = 'https://raw.githubusercontent.com/stwupton/blog_posts/dev/feed.xml';
+    final String rssLocation = 'https://raw.githubusercontent.com/stwupton/blog_posts/master/feed.xml';
 
     HeadingElement titleHeading = new HeadingElement.h1()
       ..text = 'Steven Upton\'s Blog';

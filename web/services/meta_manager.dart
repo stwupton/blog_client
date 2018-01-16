@@ -35,7 +35,7 @@ class MetaManager {
 
   void _updateMeta() {
     url.content = window.location.href;
-    image.content = 'https://lh3.googleusercontent.com/eLeox_SmZo7fHesMSn2fkY0OJ4DPRWZYljvKylBsoPRmmd-027pFvjQut3csYjxLNsvWte5CvwmgtA=w1920-h1080-rw-no';
+    image.content = 'https://lh3.googleusercontent.com/BLSrE-x7j-XcGei1MlwVeRKxez75Md0Ho2cEtV2FT9QLTt6il4zMlC1t4w-pvfeYNL0PIbSOWEdUbw=s179-rw-no';
     void setDefault() {
       title.content = 'Steven Upton\'s Blog';
       description.content = 'Steven Upton\'s game design adventures.';

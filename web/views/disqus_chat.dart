@@ -12,7 +12,7 @@ class DisqusChat extends ViewComponent {
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
 
     var disqus_config = function() {
-      this.page.url = 'https://stwupton.netlify.com/${year}/${month}/${postId}';  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.url = 'https://stwupton.com/${year}/${month}/${postId}';  // Replace PAGE_URL with your page's canonical URL variable
       this.page.identifier = '${year}_${month}_${postId}'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
 
