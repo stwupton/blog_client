@@ -90,6 +90,20 @@ class ContentWindow extends ViewComponent {
           new DisqusChat(router.year, router.month, router.postId).html
         ]);
       }
+    } else if (router.location == RouterLocation.preview) {
+      Post post = postIndex.draft(router.postId);
+      if (post == null) {
+        indexActions.fetchDraft(router.postId);
+        content.nodes.add(new DivElement()
+          ..id = 'loading_header'
+          ..nodes.add(new HeadingElement.h2()..text = 'Loading...'));
+      } else if (!post.exists) {
+        _pageNotFound();
+      } else {
+        content.nodes.addAll([
+          new PostView(post).html
+        ]);
+      }
     } else if (router.location == RouterLocation.notFound) {
       _pageNotFound();
     }

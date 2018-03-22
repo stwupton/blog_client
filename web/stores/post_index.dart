@@ -3,6 +3,8 @@ part of stores;
 class PostIndex extends Store {
   Map _indexes = {};
   Map _falseIndexes = {};
+  List<Post> _falseDrafts = [];
+  List<Post> _drafts = [];
 
   List<int> get years => _indexes.keys.toList();
 
@@ -10,7 +12,9 @@ class PostIndex extends Store {
     handlers.addAll([
       new Handler<IndexFetchedEvent>(_onIndexFetched),
       new Handler<PostFetchedEvent>(_onPostFetched),
-      new Handler<PostFetchFailedEvent>(_onPostFetchFail)
+      new Handler<DraftFetchedEvent>(_onDraftFetched),
+      new Handler<PostFetchFailedEvent>(_onPostFetchFail),
+      new Handler<DraftFetchFailedEvent>(_onDraftFetchFail)
     ]);
   }
 
@@ -61,10 +65,22 @@ class PostIndex extends Store {
     update();
   }
 
+  void _onDraftFetched(DraftFetchedEvent event) {
+    _drafts.add(new Post(
+        'Previewing Draft: ${event.id}', 
+        event.id, event.body, new DateTime.utc(3000), ''));
+    update();
+  }
+
   void _onPostFetchFail(PostFetchFailedEvent event) {
     _fillEntries(_falseIndexes, [event.year, event.month]);
     _falseIndexes[event.year][event.month][event.id] =
         new Post.nonExistent(event.id);
+    update();
+  }
+
+  void _onDraftFetchFail(DraftFetchFailedEvent event) {
+    _falseDrafts.add(new Post.nonExistent(event.id));
     update();
   }
 
@@ -101,6 +117,17 @@ class PostIndex extends Store {
       return _falseIndexes[year][month][id];
     }
     return _fetchEntries(_indexes, [year, month, id]);
+  }
+
+  Post draft(String id) {
+    List<Post> matchingFalseDrafts = _falseDrafts.where((Post post) => post.id == id).toList();
+    List<Post> matchingDrafts = _drafts.where((Post post) => post.id == id).toList();
+    if (matchingFalseDrafts.length != 0) {
+      return matchingFalseDrafts[0];
+    } else if (matchingDrafts.length != 0) {
+      return matchingDrafts[0];
+    }
+    return null;
   }
 }
 

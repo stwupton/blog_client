@@ -22,4 +22,14 @@ class IndexActions extends Actions {
           dispatch(new PostFetchFailedEvent(year, month, postId));
         });
   }
+
+  void fetchDraft(String postId) {
+    HttpRequest.request('${RESOURCE_URL}drafts/$postId.md')
+        .then((HttpRequest response) {
+          String postBody = response.responseText;
+          dispatch(new DraftFetchedEvent(postId, postBody));
+        }).catchError((_) {
+          dispatch(new DraftFetchFailedEvent(postId));
+        });
+  }
 }

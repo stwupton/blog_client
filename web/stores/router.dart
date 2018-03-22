@@ -5,6 +5,7 @@ enum RouterLocation {
   year,
   month,
   post,
+  preview,
   notFound
 }
 
@@ -34,6 +35,13 @@ class Router extends Store {
 
     if (segments.isEmpty) {
       _location = RouterLocation.home;
+      return update();
+    }
+
+    // If we are previewing a draft post.
+    if (segments[0] == 'preview' && segments[1] != null) {
+      _location = RouterLocation.preview;
+      _postId = segments[1];
       return update();
     }
 
