@@ -13,12 +13,34 @@ class AboutMe extends ViewComponent {
     professional game designer and this blog is me logging my journey towards
     that goal. So, I welcome you to embark on this adventure with me and
     please... don\'t be shy. If you enjoy my content (or don\'t!), leave a
-    comment or get in touch through one of my social networks on my
-    <a href="https://indecks.co/card/steven" target="_blank">Indecks card</a>.''';
+    comment or get in touch through one of my social networks below.''';
+
+    // Twitter link.
+    AnchorElement twitterLink = new AnchorElement(href: 'https://twitter.com/stwupton')
+      ..target = '_blank'
+      ..classes.add('social_link')
+      ..nodes.add(new ImageElement(src: '/img/twitter.png'));
+
+    // Itch.io link.
+    AnchorElement itchLink = new AnchorElement(href: 'https://stwupton.itch.io')
+      ..target = '_blank'
+      ..classes.add('social_link')
+      ..nodes.add(new ImageElement(src: '/img/itchio.png'));
+
+    // Linkedin link.
+    AnchorElement linkedinLink = new AnchorElement(href: 'https://www.linkedin.com/in/stwupton/')
+      ..target = '_blank'
+      ..classes.add('social_link')
+      ..nodes.add(new ImageElement(src: '/img/linkedin.png'));
 
     return new DivElement()
       ..id = 'about_me'
-      ..nodes.add(new ParagraphElement()
-        ..setInnerHtml(htmlText, treeSanitizer: NodeTreeSanitizer.trusted));
+      ..nodes.addAll([
+        new ParagraphElement()
+          ..setInnerHtml(htmlText, treeSanitizer: NodeTreeSanitizer.trusted),
+        new DivElement()
+          ..id = 'social_container'
+          ..nodes.addAll([twitterLink, itchLink, linkedinLink])
+      ]);
   }
 }
