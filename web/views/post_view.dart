@@ -112,6 +112,15 @@ class PostView extends ViewComponent {
       ..setInnerHtml(md.markdownToHtml(post.content),
           treeSanitizer: NodeTreeSanitizer.trusted);
 
+    // Make all links in the post open in a new tab.
+    List<Element> links = _postBody.querySelectorAll('a');
+    for (AnchorElement link in links) {
+      Uri address = Uri.parse(link.href);
+      if (address.host != Uri.base.host) {
+        link.target = '_blank';
+      }
+    }
+
     return container..nodes.add(_postBody);
   }
 }
