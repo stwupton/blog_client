@@ -33,6 +33,12 @@ class AboutMe extends ViewComponent {
       ..classes.add('social_link')
       ..nodes.add(new ImageElement(src: '/img/linkedin.png'));
 
+    // Linkedin link.
+    AnchorElement twitchLink = new AnchorElement(href: 'https://www.twitch.tv/stwupton')
+      ..target = '_blank'
+      ..classes.add('social_link')
+      ..nodes.add(new ImageElement(src: '/img/twitch.png'));
+
     return new DivElement()
       ..id = 'about_me'
       ..nodes.addAll([
@@ -40,7 +46,7 @@ class AboutMe extends ViewComponent {
           ..setInnerHtml(htmlText, treeSanitizer: NodeTreeSanitizer.trusted),
         new DivElement()
           ..id = 'social_container'
-          ..nodes.addAll([twitterLink, itchLink, linkedinLink])
+          ..nodes.addAll([twitterLink, itchLink, linkedinLink, twitchLink])
       ]);
   }
 }
